@@ -1,12 +1,43 @@
 def mrad_to_moa(mrad):
+    """
+    Converts MRAD to MOA.
+
+    :param mrad: The value in MRAD.
+    :type mrad: int or float
+
+    :return: The value in MOA.
+    :rtype: float
+    """
     return f"{mrad} MRAD = {round(mrad * 3.4377492368197, 2)} MOA"
 
 
 def moa_to_mrad(moa):
+    """
+    Converts MOA to MRAD.
+
+    :param moa: The value in MOA.
+    :type moa: int or float
+
+    :return: The value in MRAD.
+    :rtype: float
+    """
     return f"{moa} MOA = {round(moa * 0.290888, 2)} MRAD"
 
 
 def calculate_distance_to_target(target_height_in_cm, focal_height, mrad_moa=None):
+    """
+    Calculates the distance to a target by providing the height of a target in centimeters, its height on a focal
+    plane of a scope, and units of angle measurement (MRAD or MOA).
+
+    :param target_height_in_cm: The height of a target in centimeters.
+    :type target_height_in_cm: int or float
+
+    :param focal_height: The height of a target on a focal plane of a scope.
+    :param mrad_moa: int or float
+
+    :return: The distance to a target in meters.
+    :rtype: float
+    """
     if mrad_moa == 'moa':
         distance = target_height_in_cm * 34.377492368197 / focal_height
         return f"The distance is {round(distance, 2)} meters (MOA)"
@@ -99,10 +130,3 @@ def adjustments_mrad(distance, vertical=str(0), horizontal=str(0)):
              f"Make {int(horizontal_adjustment_in_mrad * 10)} clicks to the {horizontal_adjustment_direction}\n"
 
     return report
-
-
-# print(zeroing_mrad_10_meters('8D', '3L'))
-# print(adjustments_mrad(124, '10u', '7r'))
-
-# print(adjustments_mrad(100, '13U', '7l'))
-# print(adjustments_mrad(278, '21d', '53R'))
