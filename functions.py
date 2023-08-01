@@ -78,8 +78,15 @@ def zeroing_mrad_10_meters(vertical=str(0), horizontal=str(0)):
 
     one_mrad_to_distance = 1  # centimeters
 
-    vertical_adjustment_in_mrad = round(vertical_hit / one_mrad_to_distance - normal_10_meters_hit, 2)
-    horizontal_adjustment_in_mrad = round(horizontal_hit / one_mrad_to_distance, 2)
+    if vertical_direction == 'u' or vertical_direction == 'U':
+        vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_to_distance + normal_10_meters_hit, 2))
+
+    elif vertical_direction == 'd' or vertical_direction == 'D':
+        vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_to_distance - normal_10_meters_hit, 2))
+        if vertical_hit < normal_10_meters_hit:
+            vertical_adjustment_direction = 'DOWN'
+
+    horizontal_adjustment_in_mrad = abs(round(horizontal_hit / one_mrad_to_distance, 2))
 
     report = f"Adjust the scope {vertical_adjustment_in_mrad} MRAD {vertical_adjustment_direction} " \
              f"and {horizontal_adjustment_in_mrad} MRAD {horizontal_adjustment_direction}\n" \
@@ -120,8 +127,8 @@ def adjustments_mrad(distance, vertical=str(0), horizontal=str(0)):
 
     one_mrad_in_cm_to_distance = round(distance / 10, 2)  # centimeters
 
-    vertical_adjustment_in_mrad = round(vertical_hit / one_mrad_in_cm_to_distance, 2)
-    horizontal_adjustment_in_mrad = round(horizontal_hit / one_mrad_in_cm_to_distance, 2)
+    vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_in_cm_to_distance, 2))
+    horizontal_adjustment_in_mrad = abs(round(horizontal_hit / one_mrad_in_cm_to_distance, 2))
 
     report = f"To hit the target at {distance} meters, " \
              f"adjust the scope {vertical_adjustment_in_mrad} MRAD {vertical_adjustment_direction} " \
