@@ -66,32 +66,39 @@ def zeroing_mrad_10_meters(vertical=str(0), horizontal=str(0)):
     :return: The report that contains the adjustments you need to make to zero your scope for shooting at 100 meters.
     ":rtype: str
     """
-    normal_10_meters_hit = 4.5  # at 10 meters, the bullet hits the target lower than the center
+    try:
+        normal_10_meters_hit = 4.5  # at 10 meters, the bullet hits the target lower than the center
 
-    vertical_hit = float(vertical[:-1])
-    vertical_direction = vertical[-1]
-    horizontal_hit = float(horizontal[:-1])
-    horizontal_direction = horizontal[-1]
+        vertical_hit = float(vertical[:-1])
+        vertical_direction = vertical[-1]
+        horizontal_hit = float(horizontal[:-1])
+        horizontal_direction = horizontal[-1]
 
-    vertical_adjustment_direction = 'UP' if vertical_direction == 'd' or vertical_direction == 'D' else 'DOWN'
-    horizontal_adjustment_direction = 'RIGHT' if horizontal_direction == 'l' or horizontal_direction == 'L' else 'LEFT'
+        vertical_adjustment_direction = 'UP' if vertical_direction == 'd' or vertical_direction == 'D' else 'DOWN'
+        horizontal_adjustment_direction = 'RIGHT' if horizontal_direction == 'l' or horizontal_direction == 'L' else 'LEFT'
 
-    one_mrad_to_distance = 1  # centimeters
+        one_mrad_to_distance = 1  # centimeters
 
-    if vertical_direction == 'u' or vertical_direction == 'U':
-        vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_to_distance + normal_10_meters_hit, 2))
+        if vertical_direction == 'u' or vertical_direction == 'U':
+            vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_to_distance + normal_10_meters_hit, 2))
 
-    elif vertical_direction == 'd' or vertical_direction == 'D':
-        vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_to_distance - normal_10_meters_hit, 2))
-        if vertical_hit < normal_10_meters_hit:
-            vertical_adjustment_direction = 'DOWN'
+        elif vertical_direction == 'd' or vertical_direction == 'D':
+            vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_to_distance - normal_10_meters_hit, 2))
+            if vertical_hit < normal_10_meters_hit:
+                vertical_adjustment_direction = 'DOWN'
 
-    horizontal_adjustment_in_mrad = abs(round(horizontal_hit / one_mrad_to_distance, 2))
+        horizontal_adjustment_in_mrad = abs(round(horizontal_hit / one_mrad_to_distance, 2))
 
-    report = f"Adjust the scope {vertical_adjustment_in_mrad} MRAD {vertical_adjustment_direction} " \
-             f"and {horizontal_adjustment_in_mrad} MRAD {horizontal_adjustment_direction}\n" \
-             f"Make {int(vertical_adjustment_in_mrad * 10)} clicks {vertical_adjustment_direction}\n" \
-             f"Make {int(horizontal_adjustment_in_mrad * 10)} clicks to the {horizontal_adjustment_direction}\n"
+        report = f"Adjust the scope {vertical_adjustment_in_mrad} MRAD {vertical_adjustment_direction} " \
+                 f"and {horizontal_adjustment_in_mrad} MRAD {horizontal_adjustment_direction}\n" \
+                 f"Make {int(vertical_adjustment_in_mrad * 10)} clicks {vertical_adjustment_direction}\n" \
+                 f"Make {int(horizontal_adjustment_in_mrad * 10)} clicks to the {horizontal_adjustment_direction}\n"
+
+    except (ValueError, UnboundLocalError):
+        report = f"Incorrect input!\nType your shot deviations in the following manner:\n" \
+                 f"First - vertical deviations, second - horizontal deviations. Font case doesn't matter. E.g:\n" \
+                 f"'4u', '2.5r', where '4u' is 4 cm above, and '2.5r' is 2.5 cm to the right from the center.\n" \
+                 f"Or '7D', '3L', where '7D' is 7 cm below, and '3L' is 3 cm to the left from the center.\n"
 
     return report
 
@@ -117,23 +124,30 @@ def adjustments_mrad(distance, vertical=str(0), horizontal=str(0)):
     :return: The report that contains the adjustments you need to make to your scope for long range shooting.
     ":rtype: str
     """
-    vertical_hit = float(vertical[:-1])
-    vertical_direction = vertical[-1]
-    horizontal_hit = float(horizontal[:-1])
-    horizontal_direction = horizontal[-1]
+    try:
+        vertical_hit = float(vertical[:-1])
+        vertical_direction = vertical[-1]
+        horizontal_hit = float(horizontal[:-1])
+        horizontal_direction = horizontal[-1]
 
-    vertical_adjustment_direction = 'UP' if vertical_direction == 'd' or vertical_direction == 'D' else 'DOWN'
-    horizontal_adjustment_direction = 'RIGHT' if horizontal_direction == 'l' or horizontal_direction == 'L' else 'LEFT'
+        vertical_adjustment_direction = 'UP' if vertical_direction == 'd' or vertical_direction == 'D' else 'DOWN'
+        horizontal_adjustment_direction = 'RIGHT' if horizontal_direction == 'l' or horizontal_direction == 'L' else 'LEFT'
 
-    one_mrad_in_cm_to_distance = round(distance / 10, 2)  # centimeters
+        one_mrad_in_cm_to_distance = round(distance / 10, 2)  # centimeters
 
-    vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_in_cm_to_distance, 2))
-    horizontal_adjustment_in_mrad = abs(round(horizontal_hit / one_mrad_in_cm_to_distance, 2))
+        vertical_adjustment_in_mrad = abs(round(vertical_hit / one_mrad_in_cm_to_distance, 2))
+        horizontal_adjustment_in_mrad = abs(round(horizontal_hit / one_mrad_in_cm_to_distance, 2))
 
-    report = f"To hit the target at {distance} meters, " \
-             f"adjust the scope {vertical_adjustment_in_mrad} MRAD {vertical_adjustment_direction} " \
-             f"and {horizontal_adjustment_in_mrad} MRAD {horizontal_adjustment_direction}\n" \
-             f"Make {int(vertical_adjustment_in_mrad * 10)} clicks {vertical_adjustment_direction}\n" \
-             f"Make {int(horizontal_adjustment_in_mrad * 10)} clicks to the {horizontal_adjustment_direction}\n"
+        report = f"To hit the target at {distance} meters, " \
+                 f"adjust the scope {vertical_adjustment_in_mrad} MRAD {vertical_adjustment_direction} " \
+                 f"and {horizontal_adjustment_in_mrad} MRAD {horizontal_adjustment_direction}\n" \
+                 f"Make {int(vertical_adjustment_in_mrad * 10)} clicks {vertical_adjustment_direction}\n" \
+                 f"Make {int(horizontal_adjustment_in_mrad * 10)} clicks to the {horizontal_adjustment_direction}\n"
+
+    except (ValueError, UnboundLocalError):
+        report = f"Incorrect input!\nType your shot deviations in the following manner:\n" \
+                 f"First - vertical deviations, second - horizontal deviations. Font case doesn't matter. E.g:\n" \
+                 f"'4u', '2.5r', where '4u' is 4 cm above, and '2.5r' is 2.5 cm to the right from the center.\n" \
+                 f"Or '7D', '3L', where '7D' is 7 cm below, and '3L' is 3 cm to the left from the center.\n"
 
     return report
