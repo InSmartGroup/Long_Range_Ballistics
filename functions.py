@@ -51,6 +51,7 @@ def zeroing_mrad_10_meters(vertical=str(0), horizontal=str(0)):
     """
     Do the first shot at 10 meters and enter the result to calculate vertical and horizontal adjustments
     to zero the scope.
+    If no vertical or horizontal adjustments required, type '00' in the corresponding argument value.
 
     :param vertical: Must include the number of centimeters from the center of the target on the vertical axis
     and the direction. For example, if you hit the target 4 centimeters above the center, you must enter '4u' or '4U'.
@@ -87,6 +88,9 @@ def zeroing_mrad_10_meters(vertical=str(0), horizontal=str(0)):
             if vertical_hit < normal_10_meters_hit:
                 vertical_adjustment_direction = 'DOWN'
 
+        else:
+            vertical_adjustment_in_mrad = 0.0
+
         horizontal_adjustment_in_mrad = abs(round(horizontal_hit / one_mrad_to_distance, 2))
 
         report = f"Adjust the scope {vertical_adjustment_in_mrad} MRAD {vertical_adjustment_direction} " \
@@ -103,9 +107,10 @@ def zeroing_mrad_10_meters(vertical=str(0), horizontal=str(0)):
     return report
 
 
-def adjustments_mrad(distance, vertical=str(0), horizontal=str(0)):
+def adjustments_mrad(distance, vertical=str(), horizontal=str()):
     """
     Do the first shot at 100 meters and enter the result to calculate vertical and horizontal adjustments to the scope.
+    If no vertical or horizontal adjustments required, type '00' in the corresponding argument value.
 
     :param distance: The distance in meters at which you want to shoot.
     :type distance: int
