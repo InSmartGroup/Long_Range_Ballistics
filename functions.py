@@ -156,3 +156,45 @@ def adjustments_mrad(distance, vertical=str(), horizontal=str()):
                  f"Or '7D', '3L', where '7D' is 7 cm below, and '3L' is 3 cm to the left from the center.\n"
 
     return report
+
+
+def bullet_time_of_flight(distance, muzzle_velocity=800):
+    """
+    This function calculates and plot the bullet drop depending on the distance, bullet weight, and muzzle velocity.
+
+    :param distance: The distance to a target in meters.
+    :type distance: float
+
+    :param muzzle_velocity: The muzzle velocity. By default, it equals 800 meters per second.
+    :type muzzle_velocity: float
+
+    :return: The time of bullet flight to a target in seconds
+    :rtype: float
+    """
+
+    time_of_flight = round(float((distance * 2) / muzzle_velocity), 2)
+
+    return f"The bullet will hit the target in {time_of_flight} seconds at {distance}-meter distance."
+
+
+def bullet_drop(distance, muzzle_velocity=800, gravity=9.81):
+    """
+    This function calculates and plot the bullet drop depending on the distance, bullet weight, and muzzle velocity.
+
+    :param distance: The distance to a target in meters.
+    :type distance: float
+
+    :param muzzle_velocity: The muzzle velocity. By default, it equals 800 meters per second.
+    :type muzzle_velocity: float
+
+    :param gravity: The constant gravity parameter. By default, it equals 9.81 but can be changed.
+    :type gravity: float
+
+    :return: The time of bullet flight to a target in seconds
+    :rtype: float
+    """
+
+    time_of_flight = round(float((distance * 2) / muzzle_velocity), 2)
+    drop = round(float(0.5 * gravity * (time_of_flight ** 2)), 2)
+
+    return f"The bullet will drop {drop} meters on the {distance}-meter distance."
